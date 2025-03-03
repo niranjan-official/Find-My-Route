@@ -6,8 +6,6 @@ import { rtdb } from "@/src/firebaseConfig";
 import { useLocalSearchParams } from "expo-router";
 import polyline from "@mapbox/polyline";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyD4Z2oI33RzZDErUWif_EZkbRiBh2n3BJ4"; // Replace with your API key
-
 const MapScreen = () => {
   const { busId } = useLocalSearchParams();
   const [busLocation, setBusLocation] = useState<Region | null>(null);
@@ -48,7 +46,7 @@ const MapScreen = () => {
   const fetchRoute = async (start: Region, mid: Region, end: { latitude: number; longitude: number }) => {
     console.log("Function 3");
     try {
-      const url = `https://routes.googleapis.com/directions/v2:computeRoutes?key=${GOOGLE_MAPS_API_KEY}`;
+      const url = `https://routes.googleapis.com/directions/v2:computeRoutes?key=${process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY}`;
       const response = await fetch(url, {
         method: "POST",
         headers: {
