@@ -6,7 +6,6 @@ import { Header } from "react-native-elements";
 export default function HomeScreen() {
   return (
     <>
-      {/* Set the status bar text/icons to white */}
       <StatusBar
         barStyle="light-content"
         backgroundColor="#121619"

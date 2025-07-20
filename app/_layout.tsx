@@ -12,8 +12,10 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { Text, View } from "react-native";
+import { useAuth } from "@/src/auth";
+import Loading from "@/components/home/Loading";
+import Login from "@/app/Login";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -21,6 +23,8 @@ export default function RootLayout() {
     const [loaded] = useFonts({
         SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     });
+
+    const User = useAuth();
 
     useEffect(() => {
         if (loaded) {
@@ -32,20 +36,24 @@ export default function RootLayout() {
         return null;
     }
 
+    if (User === undefined) {
+        return <Loading />; // Keep showing Loading while checking auth
+    }
+
+    if (!User) {
+        return <Login />; // Show login if user is not authenticated
+    }
+
     return (
-        <ThemeProvider
-            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
             <Stack>
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen
-                    name="map"
+                    name="MapScreen"
                     options={{
                         headerTitle: () => (
                             <View>
-                                <Text
-                                    style={{ fontSize: 18, fontWeight: "bold" }}
-                                >
+                                <Text style={{ fontSize: 18, fontWeight: "bold" }}>
                                     Bus No: 3
                                 </Text>
                                 <Text style={{ fontSize: 14, color: "gray" }}>
